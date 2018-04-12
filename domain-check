@@ -1,0 +1,56 @@
+#!/bin/bash
+
+#while sleep 1m
+#do
+
+web=$(cat web.txt | awk '{print $2'})
+owner=$(cat web.txt | awk '{print $1'})
+
+exec &> 1.txt
+echo  "OPERATOR DOMAIN RESOLVED_IP STATUS"
+echo  "$owner"
+
+
+
+exec &> 2.txt
+echo""
+
+for domain in $web
+do
+
+ip=$(dig $domain | grep -E '\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?(\.|$)){4}\b' | awk '{print $5}' | tail -1)
+
+
+if [[ $ip == 103.21.244.* ]] || [[ $ip == 103.21.245.* ]] || [[ $ip == 103.21.246.* ]] || [[ $ip == 103.21.247.* ]] || [[ $ip == 103.22.200.* ]] || [[ $ip == 103.22.201.* ]] || [[ $ip == 103.22.202.* ]] || [[ $ip == 103.22.203.* ]] || [[ $ip == 103.31.4.* ]] || [[ $ip == 103.31.5.* ]] || [[ $ip == 103.31.6.* ]] || [[ $ip == 103.31.7.* ]] || [[ $ip == 104.16.* ]] || [[ $ip == 104.17.* ]] || [[ $ip == 104.18.* ]] || [[ $ip == 104.19.* ]] || [[ $ip == 104.20.* ]] || [[ $ip == 104.21.* ]] || [[ $ip == 104.22.* ]] || [[ $ip == 104.23.* ]] || [[ $ip == 104.24.* ]] || [[ $ip == 104.25.* ]] || [[ $ip == 104.26.* ]] || [[ $ip == 104.27.* ]] || [[ $ip == 104.28.* ]] || [[ $ip == 104.29.* ]] || [[ $ip == 104.30.* ]] || [[ $ip == 104.31.* ]] || [[ $ip == 108.162.* ]] || [[ $ip == 131.0.72.* ]] || [[ $ip == 131.0.73.* ]] || [[ $ip == 131.0.74.* ]] || [[ $ip == 131.0.75.* ]] || [[ $ip == 141.101.* ]] || [[ $ip == 162.158.* ]] || [[ $ip == 162.159.* ]] || [[ $ip == 172.64.* ]] || [[ $ip == 172.65.* ]] || [[ $ip == 172.66.* ]] || [[ $ip == 172.67.* ]] || [[ $ip == 172.68.* ]] || [[ $ip == 172.69.* ]] || [[ $ip == 172.70.* ]] || [[ $ip == 172.71.* ]] || [[ $ip == 173.245.* ]] || [[ $ip == 188.114.* ]] || [[ $ip == 190.93.* ]] || [[ $ip == 197.234.240.* ]] || [[ $ip == 197.234.241.* ]] || [[ $ip == 197.234.242.* ]] || [[ $ip == 197.234.243.* ]] || [[ $ip == 198.41.* ]] || [[ $ip == 199.83.128.* ]] || [[ $ip == 199.83.129.* ]] || [[ $ip == 199.83.130.* ]] || [[ $ip == 199.83.131.* ]] || [[ $ip == 199.83.132.* ]] || [[ $ip == 199.83.133.* ]] || [[ $ip == 199.83.134.* ]] || [[ $ip == 199.83.135.* ]] || [[ $ip == 198.143.* ]] || [[ $ip == 149.126.72.* ]] || [[ $ip == 149.126.73.* ]] || [[ $ip == 149.126.74.* ]] || [[ $ip == 149.126.75.* ]] || [[ $ip == 149.126.76.* ]] || [[ $ip == 149.126.77.* ]] || [[ $ip == 149.126.78.* ]] || [[ $ip == 149.126.79.* ]] || [[ $ip == 103.28.248.* ]] || [[ $ip == 103.28.249.* ]] || [[ $ip == 103.28.250.* ]] || [[ $ip == 103.28.251.* ]] || [[ $ip == 185.11.124.* ]] || [[ $ip == 185.11.125.* ]] || [[ $ip == 185.11.126.* ]] || [[ $ip == 185.11.127.* ]] || [[ $ip == 45.64.64.* ]] || [[ $ip == 45.64.65.* ]] || [[ $ip == 45.64.66.* ]] || [[ $ip == 45.64.67.* ]] || [[ $ip == 192.230.* ]] || [[ $ip == 107.154.* ]] || [[ $ip == 45.60.* ]] || [[ $ip == 45.223.* ]]
+
+then
+echo " $domain $ip GOOD"
+
+else
+message=echo " $domain $ip BAD"
+
+
+#Email
+#cho -e "Hi Team, \n\nThe \"$domain\" domain is POISONED with  $ip Resolved IP.  " | mail -s "Domain $domain is DOWN" mark.quilates@yahoo.com.ph
+
+
+# Slack incoming web-hook URL and user name
+url='https://hooks.slack.com/services/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'
+subject="Check Status"
+message="${subject}: The domain $domain is now POISONED!"
+
+# Build our JSON payload and send it as a POST request to the Slack incoming web-hook URL
+payload="payload={\"channel\": \"${to}\", \"username\": \"${username}\", \"text\": \"${message}\", \"icon_emoji\": \"${emoji}\"}"
+curl -m 5 --data-urlencode "${payload}" $url
+
+
+fi
+done
+
+paste 1.txt 2.txt > 3.txt
+sed 's/ \+/,/g' 3.txt > Domain-Status.csv
+rm 1.txt 2.txt 3.txt
+
+#zip -r "Domain-Status.csv-$(date +"%Y-%m-%d").zip" Domain-Status.csv
+
+#done
