@@ -35,7 +35,7 @@ message=echo " $domain $ip BAD"
 
 
 # Slack incoming web-hook URL and user name
-url='https://hooks.slack.com/services/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'
+url='https://hooks.slack.com/services/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1'
 subject="Check Status"
 message="${subject}: The domain $domain is now POISONED!"
 
