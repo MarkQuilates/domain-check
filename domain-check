@@ -49,7 +49,6 @@ done
 
 exec &> 3.txt
 m=$(cat 2.txt | grep .co | sed 's/^ok//')
-#m=$(cat 2.txt | grep .co)
 echo
 echo "$m"
 
