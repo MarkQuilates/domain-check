@@ -47,10 +47,18 @@ curl -m 5 --data-urlencode "${payload}" $url
 fi
 done
 
-paste 1.txt 2.txt > 3.txt
-sed 's/ \+/,/g' 3.txt > Domain-Status.csv
+exec &> 3.txt
+m=$(cat 2.txt | grep .co | sed 's/^ok//')
+#m=$(cat 2.txt | grep .co)
+echo
+echo "$m"
+
+
+paste 1.txt 3.txt >> status-domain.log
+#sed 's/ \+/,/g' status-domain.log > Domain-Status.csv
 rm 1.txt 2.txt 3.txt
 
 #zip -r "Domain-Status.csv-$(date +"%Y-%m-%d").zip" Domain-Status.csv
 
 #done
+
