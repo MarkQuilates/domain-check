@@ -51,7 +51,7 @@ elif [[ -n "$ip" ]]
 then
 echo " $domain $ip POISONED $time"
 
-url='https://hooks.slack.com/services/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'
+url='https://hooks.slack.com/services/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dsd'
 subject="Check Status"
 message="${subject}: The domain $domain is now POISONED!"
 
@@ -63,7 +63,7 @@ curl -m 5 --data-urlencode "${payload}" $url
 else
 echo " $domain NO_IP COULD_NOT_RESOLVE $time"
 
-url='https://hooks.slack.com/services/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'
+url='https://hooks.slack.com/services/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dsd'
 subject="Check Status"
 message="${subject}: Could not resolve $domain"
 
