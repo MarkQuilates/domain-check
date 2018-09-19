@@ -12,3 +12,4 @@ cat << EOF
  { "{#DOMAIN}":"nb88fa.com" }
 ]}
 EOF
+
