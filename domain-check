@@ -86,3 +86,4 @@ paste 1.txt 3.txt >> status-domain.log
 rm 1.txt 2.txt 3.txt
 
 #done
+
